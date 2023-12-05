@@ -1,0 +1,21 @@
+---
+- hosts: "all"
+  tasks:
+  - name: Clone repo to proj/
+    git:
+      repo: https://github.com/jamirhan/pdris_ansible.git
+      dest: proj/
+
+  - name: Build image
+    docker_image:
+      name: awesome_project
+      build:
+        path: proj/
+      source: build
+      state: present
+
+  - name: Start a container with a command
+    docker_container:
+      name: awesome_project
+      image: awesome_project
+      command: ["go", "run", "main.go"]
